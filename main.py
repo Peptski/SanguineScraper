@@ -14,9 +14,11 @@ def scrape(url, targetValue, targetId='', targetClass=''):
     driver.get(url)
     time.sleep(3)
     if targetId != '':
-        res = driver.find_element(By.ID, targetId).text
+        if not driver.find_elements(By.ID, targetId): return False
+        res = driver.find_elements(By.ID, targetId)[0].text
     else:
-        res = driver.find_element(By.CLASS_NAME, targetClass).text
+        if not driver.find_elements(By.CLASS_NAME, targetClass): return False
+        res = driver.find_elements(By.CLASS_NAME, targetClass)[0].text
     return res == targetValue
     
 def alert(url, newData, foundData):
@@ -29,7 +31,7 @@ def alert(url, newData, foundData):
     print(f'DATA CHANGED IN URL: {url}')
     s = smtplib.SMTP_SSL('smtp.gmail.com', 465)
     s.ehlo()
-    s.login('', '')
+    s.login('from', 'from_pw')
     mail = """\
 From: 
 To: 
@@ -37,7 +39,7 @@ Subject: Change detected!
 
 Change detected on URL: %s
 """ % (url)
-    s.sendmail('', '', mail)
+    s.sendmail('from', 'to', mail)
     s.close()
 
 
