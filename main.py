@@ -12,13 +12,14 @@ driver = webdriver.Chrome( options=chrome_options)
 
 def scrape(url, targetValue, targetId='', targetClass=''):
     driver.get(url)
-    time.sleep(3)
+    time.sleep(5)
     if targetId != '':
         if not driver.find_elements(By.ID, targetId): return False
         res = driver.find_elements(By.ID, targetId)[0].text
     else:
         if not driver.find_elements(By.CLASS_NAME, targetClass): return False
         res = driver.find_elements(By.CLASS_NAME, targetClass)[0].text
+    print(f'Found: _{res}_, looking for: _{targetValue}_')
     return res == targetValue
     
 def alert(url, newData, foundData):
