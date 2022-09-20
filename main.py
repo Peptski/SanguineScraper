@@ -20,6 +20,9 @@ def scrape(url, targetValue, targetId='', targetClass=''):
         if not driver.find_elements(By.CLASS_NAME, targetClass): return False
         res = driver.find_elements(By.CLASS_NAME, targetClass)[0].text
     print(f'Found: _{res}_, looking for: _{targetValue}_')
+    if res != targetValue:
+        with open('found.txt', 'a') as f:
+            f.write('\n'.join([res, targetValue, ""]))
     return res == targetValue
     
 def alert(url, newData, foundData):
